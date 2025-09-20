@@ -1,0 +1,31 @@
+TEST:
+  europe:
+    Connect: 'muc\QQPAM0O'
+    Admin:   'muc\QQPAM0P'
+
+POC:
+  europe:
+    Connect: 'muc\QQPAM2P'
+    Admin:   'muc\QQPAM2Q'
+
+INT:
+  europe:
+    Connect: 'muc\QQPAM0T'
+    Admin:   'muc\QQPAM0S'
+  china:
+    Connect: 'china\QQPAM5O'
+    Admin:   'china\QQPAM5P'
+
+PROD:
+  americas:
+    Connect: 'mcbmw1\QQPAM3N'
+    Admin:   'mcbmw1\QQPAM3M'
+  africa:
+    Connect: 'w9\QQPAM3L'
+    Admin:   'w9\QQPAM3K'
+  europe:
+    Connect: 'muc\QQPAM0U'
+    Admin:   'muc\QQPAM0V'
+  china:
+    Connect: 'china\QQPAMB0'
+    Admin:   'china\QQPAMC0'

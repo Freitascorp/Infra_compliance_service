@@ -1,0 +1,179 @@
+# expected_config.yml
+
+# 1. Core OS Information
+Windows_Version:
+  Caption: "Microsoft Windows Server 2019 Standard"
+  Version: "10.0.17763"
+  OSArchitecture: "64-bit"
+
+# 2. PSM Details
+PSM_Version:
+  Version: "12.6.10.8"
+
+# 3. Installed Applications (name + minimum version)
+AllInstalledApps:
+  - DisplayName: "AutoIt v3.3.16.1"
+    MinVersion: "3.3.16.1"
+  - DisplayName: "Google Chrome"
+    MinVersion: "108.0.5359.125"
+  - DisplayName: "Microsoft .NET Runtime - 8.0.15 (x64)"
+    MinVersion: "8.0.15.34714"
+  - DisplayName: "UniversalForwarder"
+    MinVersion: "9.2.1.0"
+  - DisplayName: "Microsoft Edge"
+    MinVersion: "112.0.1722.39"
+  - DisplayName: "Microsoft ODBC Driver 17 for SQL Server"
+    MinVersion: "17.5.1.1"
+  - DisplayName: "Microsoft ODBC Driver 18 for SQL Server"
+    MinVersion: "18.0.1.1"
+  - DisplayName: "Microsoft SQL Server Management Studio - 18.5"
+    MinVersion: "15.0.18330.0"
+  - DisplayName: "pgAdmin 4 version 7.0"
+    MinVersion: "7.0"
+  - DisplayName: "PrivateArk Client"
+    MinVersion: "8.00"
+  - DisplayName: "TippingPoint SMS Client 5.5.4.205331"
+    MinVersion: "5.5.4.205331"
+  - DisplayName: "UniversalForwarder"
+    MinVersion: "9.2.1.0"
+  - DisplayName: "VMware Tools"
+    MinVersion: "12.5.1.24649672"   
+  - DisplayName: "WinSCP"
+    MinVersion: "5.9.5"       
+  - DisplayName: "Control-M Client 9.0.21.200 (CyberarkPSM)"
+    MinVersion: ""     
+  - DisplayName: "Microsoft SQL Server Management Studio - 20.1"
+    MinVersion: "20.1.10.0"  
+# 4. Required Services and Status
+PSM_Service:
+  PSM_ServiceStatus: "Running"
+
+# 5. Disk Space Thresholds (GB)
+Disk_Space:
+  "C:": 
+    MinFreeGB: 10
+  "D:": 
+    MinFreeGB: 1
+  "E:": 
+    MinFreeGB: 100
+
+# 6. WinRM Listener Configuration
+WinRM_Listeners:
+  - Port: 5985
+    Transport: "HTTP"
+    Enabled: true
+  - Port: 5986
+    Transport: "HTTPS"
+    Enabled: true
+
+# 7. Applied Group Policies
+Applied_GPOs:
+  Required:
+    - "SCPAM_PSM_MSEDGE-{{ENV}}"
+    - "SCPAM_{{ENV}}-Server"
+    - "Server-AdvancedAuditing"
+    - "Server-BaseSettings"
+    - "Server-SCCM-SCOM"
+    - "GLOBAL-TrustedCertificates-Policy"
+    - "{{REGION}}-Domain-Policy"
+    - "Default Domain Policy"
+    - "GLOBAL-Security-Settings-PROD2-Policy"
+    - "GLOBAL-Security-Settings-PROD1-Policy"
+
+
+# 8. Folder Permissions (ensure owner and denies)
+FolderPermissions:
+  PSMComponentsFolder_Permissions:
+    Owner: "NT SERVICE\\TrustedInstaller"
+    DenyIdentities:
+      - "{{ Users[ENV][REGION].Admin }}"
+      - "{{ Users[ENV][REGION].Connect }}"
+      - "{{ HOSTNAME }}\\PSMShadowUsers"
+  PSMFolder_Permissions:
+    Owner: "NT SERVICE\\TrustedInstaller"
+    DenyIdentities:
+      - "{{ Users[ENV][REGION].Admin }}"
+      - "{{ Users[ENV][REGION].Connect }}"
+      - "{{ HOSTNAME }}\\PSMShadowUsers"
+  PSMRecordingsFolder_Permissions:
+    Owner: "NT SERVICE\\TrustedInstaller"
+    DenyIdentities:
+      - "{{ Users[ENV][REGION].Admin }}"
+      - "{{ Users[ENV][REGION].Connect }}"
+      - "{{ HOSTNAME }}\\PSMShadowUsers"
+
+# 9. AppLocker Script Settings
+AppLocker_Script_Settings:
+  PSM_CONNECT:       "{{ Users[ENV][REGION].Connect }}"
+  PSM_ADMIN_CONNECT: "{{ Users[ENV][REGION].Admin }}"
+  DEFAULT_PSM_PATH:  "E:\\CyberArk\\PSM"
+
+# 10. Vault Credential File (must exist and be recent)
+Vault_Credential_File:
+  Path: "E:\\Cyberark\\PSM\\Vault\\Vault.ini"
+  MaxAgeDays: 365
+
+# 11. Vault Connectivity
+Vault_Connectivity:
+  PingStatus: "Success"
+  Role: "Primary"
+
+# 12. Drivers (version checks)
+Drivers:
+  - Driver: "chromedriver.exe"
+    MinVersion: "108.0.5359.71"
+  - Driver: "msedgedriver.exe"
+    MinVersion: "112.0.1722.39"
+
+# 13. Components Version (key binaries)
+Components_Version:
+  - Name: "CAAWSWrapper.exe"
+    MinVersion: "12.6.0.6"
+  - Name: "DLLInjector.exe"
+    MinVersion: "12.6.10.17"
+  - Name: "PSMInitSession.exe"
+    MinVersion: "12.6.10.13"
+
+# 14. Certificates Presence & Expiration (in days)
+Certificates:
+  - SubjectPattern: "CN={{ HOSTNAME_LOWER }}.europe.bmw.corp*"
+    MinDaysToExpire: 30
+  - SubjectPattern: "CN=BMW Group Issuing CA SSL2*"
+    MinDaysToExpire: 365
+
+# 15. Environment Variables (must exist)
+Environment_Variables:
+  Required:
+    JAVA_HOME: C:\Program Files\Java\jdk11.0.21
+    TNS_ADMIN: C:\Oracle\instantclient_21_17\network\admin
+    EMCLIENT_JAVA_HOME: C:\Program Files\Java\jdk11.0.21
+    SPLUNK_HOME: C:\Program Files\BMW_SplunkUniversalForwarder\
+    Path:
+      Contains: E:\oracle\instantclient\
+
+# 16. Security Hardening Settings
+Hardening_Settings:
+  SUPPORT_WEB_APPLICATIONS: '$true'
+  PSM_CONNECT_USER:       "{{ Users[ENV][REGION].Connect }}"
+  PSM_ADMIN_CONNECT_USER: "{{ Users[ENV][REGION].Admin }}"
+
+# 17. PrivateArk Client
+PrivateArk_Client:
+  Installed: true
+  Version: "8.00"
+
+# 18. RDSTest Settings
+RDSTest:
+  ServiceStatus: "Running"
+  Computer: "{{ HOSTNAME }}"
+  RDSServiceInstalled: true
+  ConnectionsAllowed: true
+
+# 19. PSM Related Services
+PSM_RelatedServices:
+- Name: pasagent
+  DisplayName: CyberArk EPM PAS Agent
+  Status: Running
+- Name: vf_agent
+  DisplayName: CyberArk EPM Agent
+  Status: Running
