@@ -4,30 +4,20 @@
         [ValidateSet('TEST','POC','INT','PROD')][string] $Environment = 'TEST',
         [ValidateSet('europe','americas','africa','china')][string] $Region      = 'europe',
         [string]                                     $BaseLineConfig = '',
-        [string]                                     $AuditConfig    = "$(Join-Path 'E:\CyberArk\Audit' "${env:COMPUTERNAME}_PSM_Audit_Report.yaml")",
+        [string]                                     $AuditConfig    = "$(Join-Path 'E:\CyberArk\Audit' "${env:COMPUTERNAME}_PSM_Audit_Report.json")",
         [string]                                     $OutputPath     = "$(Join-Path 'E:\CyberArk\Audit' "${env:COMPUTERNAME}_Compliance_Report.txt")"
     )
 
     # ► START TIMER ◄
     $sw = [Diagnostics.Stopwatch]::StartNew()
 
-    # Load PowerShell-Yaml module from specific path
-    $yamlModulePath = "E:\CyberArk\Audit\Modules\powershell-yaml\0.4.12\powershell-yaml.psd1"
-    if (-not (Test-Path $yamlModulePath)) {
-        Write-Error "powershell-yaml module not found at $yamlModulePath"
-        return
-    }
-
-    try {
-        Import-Module $yamlModulePath -Force -ErrorAction Stop
-    } catch {
-        Write-Error "Failed to import powershell-yaml module: $_"
-        return
-    }
+    # No longer need YAML module - using native JSON support
 
     # pick up default baseline if none supplied
     if (-not $BaseLineConfig) {
-        $BaseLineConfig = 'E:\CyberArk\Audit\ComplianceCheck\Baseline\psm_baseline.yml'
+        # Get the current module path for relative baseline path
+        $ModuleRoot = Split-Path -Parent $PSScriptRoot
+        $BaseLineConfig = Join-Path $ModuleRoot "Baseline\psm_baseline.json"
         Write-Host "No baseline provided; using default: $BaseLineConfig"
     }
 
@@ -35,7 +25,7 @@
     $expected = Get-Baseline -Environment $Environment -Region $Region
 
     Write-Host "Parsing audit: $AuditConfig"
-    $audit = Get-YamlContent -Path $AuditConfig
+    $audit = Get-JsonContent -Path $AuditConfig
 
     $pass = [System.Collections.Generic.List[string]]::new()
     $fail = [System.Collections.Generic.List[string]]::new()

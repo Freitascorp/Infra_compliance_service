@@ -1,0 +1,21 @@
+{
+  "PSM_Version": "12.6.10.8",
+  "Windows_Version": {
+    "Caption": "Microsoft Windows 11 Pro",
+    "Version": "10.0.22631",
+    "OSArchitecture": "64-bit"
+  },
+  "Disk_Space": {
+    "C:": {
+      "TotalSizeGB": 500,
+      "FreeSpaceGB": 200
+    }
+  },
+  "Environment_Variables": {
+    "PATH": "C:\\Windows\\System32;C:\\Windows",
+    "COMPUTERNAME": "TEST-MACHINE"
+  },
+  "Generated": "2025-01-20T19:22:28Z",
+  "TestMode": true,
+  "Note": "This is a test compliance report generated for JSON migration validation"
+}

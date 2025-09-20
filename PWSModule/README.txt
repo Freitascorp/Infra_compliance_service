@@ -1,23 +1,23 @@
 ﻿CyberArk ComplianceCheck PowerShell Module
 ==========================================
 
-A modular PowerShell framework to audit and validate the configuration of **CyberArk Windows components** against a YAML-based compliance baseline.
+A modular PowerShell framework to audit and validate the configuration of **CyberArk Windows components** against a JSON-based compliance baseline.
 
 Currently implemented: **Privileged Session Manager (PSM)**.
 
 Features
 --------
 - Audits CyberArk PSM infrastructure
-- Compares actual state with YAML-defined baselines
+- Compares actual state with JSON-defined baselines
 - Generates detailed compliance reports
 - Modular structure to easily support additional CyberArk components (CPM, PVWA, etc.)
-- PowerShell-Yaml integration for config parsing
+- Native PowerShell JSON support for config parsing
 
 Folder Structure
 ----------------
 ComplianceCheck/
 ├── Baseline/
-│   └── psm_baseline.yml
+│   └── psm_baseline.json
 ├── Public/
 │   ├── Invoke-PSMAudit.ps1
 │   └── Invoke-PSMComplianceCheck.ps1
@@ -28,7 +28,7 @@ ComplianceCheck/
 │       └── Compliance/
 │       |    └── Test-*.ps1
 │       ├── Config/
-│       │   └── users.yml
+│       │   └── users.json
 ├── ComplianceCheck.psd1
 ├── ComplianceCheck.psm1
 └── README.txt
@@ -36,10 +36,7 @@ ComplianceCheck/
 Installation
 ------------
 1. Copy the module to a valid PowerShell module path (or load by full path)
-2. Install required dependency:
-   Install-Module powershell-yaml -Scope CurrentUser
-
-3. Import the module:
+2. Import the module (no additional dependencies required):
    Import-Module "E:\CyberArk\Audit\ComplianceCheck\ComplianceCheck.psd1" -Force
 
 Usage (for PSM)
@@ -49,14 +46,14 @@ Usage (for PSM)
    Invoke-PSMAudit
 
    This generates:
-   E:\CyberArk\Audit\<COMPUTERNAME>_PSM_Audit_Report.yaml
+   E:\CyberArk\Audit\<COMPUTERNAME>_PSM_Audit_Report.json
 
 2. Run compliance check:
    Invoke-PSMComplianceCheck
 
    Automatically uses:
-   - Audit file: E:\CyberArk\Audit\<COMPUTERNAME>_PSM_Audit_Report.yaml
-   - Baseline: Baseline\psm_baseline.yml
+   - Audit file: E:\CyberArk\Audit\<COMPUTERNAME>_PSM_Audit_Report.json
+   - Baseline: Baseline\psm_baseline.json
    - Output: E:\CyberArk\Audit\<COMPUTERNAME>_Compliance_Report.txt
 
 Output Format
@@ -75,8 +72,8 @@ To support additional components like CPM or PVWA:
 Requirements
 ------------
 - PowerShell 5.1 or newer
-- powershell-yaml module
 - Administrator privileges (for auditing)
+- No external dependencies required (uses native JSON support)
 
 License
 -------

@@ -12,19 +12,7 @@ function Invoke-PSMAudit {
 
     Write-Host "Starting CyberArk PSM infrastructure audit..."
 
-    # Load PowerShell-Yaml module from specific path
-    $yamlModulePath = "E:\CyberArk\Audit\Modules\powershell-yaml\0.4.12\powershell-yaml.psd1"
-    if (-not (Test-Path $yamlModulePath)) {
-        Write-Error "powershell-yaml module not found at $yamlModulePath"
-        return
-    }
-
-    try {
-        Import-Module $yamlModulePath -Force -ErrorAction Stop
-    } catch {
-        Write-Error "Failed to import powershell-yaml module: $_"
-        return
-    }
+    # No longer need YAML module - using native JSON support
 
     # Define sections for audit data collection
     $sections = [ordered]@{
@@ -65,11 +53,11 @@ function Invoke-PSMAudit {
 
     # Output file name
     $hostname = $env:COMPUTERNAME
-    $yamlPath = Join-Path $OutputFolder "${hostname}_PSM_Audit_Report.yaml"
+    $jsonPath = Join-Path $OutputFolder "${hostname}_PSM_Audit_Report.json"
 
-    # Save report as YAML
-    $report | ConvertTo-Yaml | Out-File -FilePath $yamlPath -Encoding UTF8
+    # Save report as JSON
+    $report | ConvertTo-Json -Depth 10 | Out-File -FilePath $jsonPath -Encoding UTF8
 
-    Write-Host "Audit report saved to: $yamlPath"
-    return $yamlPath
+    Write-Host "Audit report saved to: $jsonPath"
+    return $jsonPath
 }

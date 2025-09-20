@@ -1,0 +1,227 @@
+{
+  "Components_Version": [
+    {
+      "MinVersion": "12.6.0.6",
+      "Name": "CAAWSWrapper.exe"
+    },
+    {
+      "MinVersion": "12.6.10.17",
+      "Name": "DLLInjector.exe"
+    },
+    {
+      "MinVersion": "12.6.10.13",
+      "Name": "PSMInitSession.exe"
+    }
+  ],
+  "Vault_Credential_File": {
+    "MaxAgeDays": 365,
+    "Path": "E:\\\\Cyberark\\\\PSM\\\\Vault\\\\Vault.ini"
+  },
+  "Certificates": [
+    {
+      "SubjectPattern": "CN={{ HOSTNAME_LOWER }}.europe.bmw.corp*",
+      "MinDaysToExpire": 30
+    },
+    {
+      "SubjectPattern": "CN=BMW Group Issuing CA SSL2*",
+      "MinDaysToExpire": 365
+    }
+  ],
+  "Drivers": [
+    {
+      "MinVersion": "108.0.5359.71",
+      "Driver": "chromedriver.exe"
+    },
+    {
+      "MinVersion": "112.0.1722.39",
+      "Driver": "msedgedriver.exe"
+    }
+  ],
+  "AllInstalledApps": [
+    {
+      "DisplayName": "AutoIt v3.3.16.1",
+      "MinVersion": "3.3.16.1"
+    },
+    {
+      "DisplayName": "Google Chrome",
+      "MinVersion": "108.0.5359.125"
+    },
+    {
+      "DisplayName": "Microsoft .NET Runtime - 8.0.15 (x64)",
+      "MinVersion": "8.0.15.34714"
+    },
+    {
+      "DisplayName": "UniversalForwarder",
+      "MinVersion": "9.2.1.0"
+    },
+    {
+      "DisplayName": "Microsoft Edge",
+      "MinVersion": "112.0.1722.39"
+    },
+    {
+      "DisplayName": "Microsoft ODBC Driver 17 for SQL Server",
+      "MinVersion": "17.5.1.1"
+    },
+    {
+      "DisplayName": "Microsoft ODBC Driver 18 for SQL Server",
+      "MinVersion": "18.0.1.1"
+    },
+    {
+      "DisplayName": "Microsoft SQL Server Management Studio - 18.5",
+      "MinVersion": "15.0.18330.0"
+    },
+    {
+      "DisplayName": "pgAdmin 4 version 7.0",
+      "MinVersion": "7.0"
+    },
+    {
+      "DisplayName": "PrivateArk Client",
+      "MinVersion": "8.00"
+    },
+    {
+      "DisplayName": "TippingPoint SMS Client 5.5.4.205331",
+      "MinVersion": "5.5.4.205331"
+    },
+    {
+      "DisplayName": "UniversalForwarder",
+      "MinVersion": "9.2.1.0"
+    },
+    {
+      "DisplayName": "VMware Tools",
+      "MinVersion": "12.5.1.24649672"
+    },
+    {
+      "DisplayName": "WinSCP",
+      "MinVersion": "5.9.5"
+    },
+    {
+      "DisplayName": "Control-M Client 9.0.21.200 (CyberarkPSM)",
+      "MinVersion": ""
+    },
+    {
+      "DisplayName": "Microsoft SQL Server Management Studio - 20.1",
+      "MinVersion": "20.1.10.0"
+    }
+  ],
+  "Hardening_Settings": {
+    "PSM_ADMIN_CONNECT_USER": "{{ Users[ENV][REGION].Admin }}",
+    "PSM_CONNECT_USER": "{{ Users[ENV][REGION].Connect }}",
+    "SUPPORT_WEB_APPLICATIONS": "$true"
+  },
+  "WinRM_Listeners": [
+    {
+      "Port": 5985,
+      "Transport": "HTTP",
+      "Enabled": true
+    },
+    {
+      "Port": 5986,
+      "Transport": "HTTPS",
+      "Enabled": true
+    }
+  ],
+  "Disk_Space": {
+    "D:": {
+      "MinFreeGB": 1
+    },
+    "C:": {
+      "MinFreeGB": 10
+    },
+    "E:": {
+      "MinFreeGB": 100
+    }
+  },
+  "PSM_Version": {
+    "Version": "12.6.10.8"
+  },
+  "PSM_Service": {
+    "PSM_ServiceStatus": "Running"
+  },
+  "Environment_Variables": {
+    "Required": {
+      "SPLUNK_HOME": "C:\\\\Program Files\\\\BMW_SplunkUniversalForwarder\\\\",
+      "Path": {
+        "Contains": "E:\\\\oracle\\\\instantclient\\\\"
+      },
+      "TNS_ADMIN": "C:\\\\Oracle\\\\instantclient_21_17\\\\network\\\\admin",
+      "JAVA_HOME": "C:\\\\Program Files\\\\Java\\\\jdk11.0.21",
+      "EMCLIENT_JAVA_HOME": "C:\\\\Program Files\\\\Java\\\\jdk11.0.21"
+    }
+  },
+  "Applied_GPOs": {
+    "Required": [
+      "SCPAM_PSM_MSEDGE-{{ENV}}",
+      "SCPAM_{{ENV}}-Server",
+      "Server-AdvancedAuditing",
+      "Server-BaseSettings",
+      "Server-SCCM-SCOM",
+      "GLOBAL-TrustedCertificates-Policy",
+      "{{REGION}}-Domain-Policy",
+      "Default Domain Policy",
+      "GLOBAL-Security-Settings-PROD2-Policy",
+      "GLOBAL-Security-Settings-PROD1-Policy"
+    ]
+  },
+  "Vault_Connectivity": {
+    "PingStatus": "Success",
+    "Role": "Primary"
+  },
+  "RDSTest": {
+    "Computer": "{{ HOSTNAME }}",
+    "RDSServiceInstalled": true,
+    "ConnectionsAllowed": true,
+    "ServiceStatus": "Running"
+  },
+  "PSM_RelatedServices": [
+    {
+      "Status": "Running",
+      "Name": "pasagent",
+      "DisplayName": "CyberArk EPM PAS Agent"
+    },
+    {
+      "Status": "Running",
+      "Name": "vf_agent",
+      "DisplayName": "CyberArk EPM Agent"
+    }
+  ],
+  "FolderPermissions": {
+    "PSMFolder_Permissions": {
+      "Owner": "NT SERVICE\\\\TrustedInstaller",
+      "DenyIdentities": [
+        "{{ Users[ENV][REGION].Admin }}",
+        "{{ Users[ENV][REGION].Connect }}",
+        "{{ HOSTNAME }}\\\\PSMShadowUsers"
+      ]
+    },
+    "PSMComponentsFolder_Permissions": {
+      "Owner": "NT SERVICE\\\\TrustedInstaller",
+      "DenyIdentities": [
+        "{{ Users[ENV][REGION].Admin }}",
+        "{{ Users[ENV][REGION].Connect }}",
+        "{{ HOSTNAME }}\\\\PSMShadowUsers"
+      ]
+    },
+    "PSMRecordingsFolder_Permissions": {
+      "Owner": "NT SERVICE\\\\TrustedInstaller",
+      "DenyIdentities": [
+        "{{ Users[ENV][REGION].Admin }}",
+        "{{ Users[ENV][REGION].Connect }}",
+        "{{ HOSTNAME }}\\\\PSMShadowUsers"
+      ]
+    }
+  },
+  "PrivateArk_Client": {
+    "Version": "8.00",
+    "Installed": true
+  },
+  "Windows_Version": {
+    "OSArchitecture": "64-bit",
+    "Version": "10.0.17763",
+    "Caption": "Microsoft Windows Server 2019 Standard"
+  },
+  "AppLocker_Script_Settings": {
+    "PSM_CONNECT": "{{ Users[ENV][REGION].Connect }}",
+    "DEFAULT_PSM_PATH": "E:\\\\CyberArk\\\\PSM",
+    "PSM_ADMIN_CONNECT": "{{ Users[ENV][REGION].Admin }}"
+  }
+}

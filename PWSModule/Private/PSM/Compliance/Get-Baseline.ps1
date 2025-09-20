@@ -5,19 +5,22 @@ function Get-Baseline {
         [Parameter(Mandatory)][ValidateSet('europe','americas','africa','china')][string] $Region
     )
 
-    # (1) hard-coded paths
-    $PathBaseline = 'E:\CyberArk\Audit\ComplianceCheck\Baseline\psm_baseline.yml'
-    $PathUsers    = 'E:\CyberArk\Audit\ComplianceCheck\Public\Config\users.yml'
+    # Get the current module path for relative paths
+    $ModuleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
+    
+    # (1) paths relative to module
+    $PathBaseline = Join-Path $ModuleRoot "Baseline\psm_baseline.json"
+    $PathUsers    = Join-Path $ModuleRoot "Private\PSM\Config\users.json"
 
     if (-not (Test-Path $PathBaseline)) { throw "Baseline not found at $PathBaseline" }
     if (-not (Test-Path $PathUsers))    { throw "Users config not found at $PathUsers" }
 
-    # (2) load raw YAML
+    # (2) load raw JSON and users config
     $raw = Get-Content $PathBaseline -Raw
-    $usersAll = ConvertFrom-Yaml (Get-Content $PathUsers -Raw)
+    $usersAll = Get-Content $PathUsers -Raw | ConvertFrom-Json
 
     if (-not $usersAll.ContainsKey($Environment) -or -not $usersAll[$Environment].ContainsKey($Region)) {
-        throw "No mapping for $Environment / $Region in users.yml"
+        throw "No mapping for $Environment / $Region in users.json"
     }
     $pair = $usersAll[$Environment][$Region]
     $HOST = $env:COMPUTERNAME
@@ -33,7 +36,7 @@ function Get-Baseline {
       -replace '\{\{\s*REGION\s*\}\}',                          $REGION_UP
 
     # (4) parse it
-    $baseline = ConvertFrom-Yaml $filled
+    $baseline = ConvertFrom-Json $filled
 
     # (5) inject *only* the Computer override
     if (-not $baseline.PSObject.Properties.Name.Contains('RDSTest')) {

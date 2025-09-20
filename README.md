@@ -66,12 +66,19 @@ Configure the service through `appsettings.json`:
 - **ScriptPath**: Path to the PowerShell script to execute
 - **Urls**: HTTP endpoints the service will listen on
 
-## PowerShell Script (just for example purpose)
+## CyberArk Compliance Module Integration
 
-The included `PWSscript.ps1` script:
-- Scans directory structures recursively
-- Generates JSON output with directory listings
-- Can be customized for different system monitoring tasks
+The service now integrates with the **ComplianceCheck PowerShell module** (`PWSModule/`):
+- **Comprehensive CyberArk PSM compliance auditing** against JSON baselines
+- **Infrastructure monitoring** with detailed compliance reporting  
+- **Native JSON support** - no external dependencies required
+- **Modular architecture** supporting additional CyberArk components
+
+### Key Features:
+- Audits CyberArk PSM infrastructure against configurable baselines
+- Generates detailed compliance reports in JSON format
+- Integrates seamlessly with the .NET Windows Service
+- Supports multiple environments (TEST, POC, INT, PROD) and regions
 
 ## Installation
 
